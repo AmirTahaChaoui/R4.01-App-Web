@@ -1,4 +1,4 @@
-package fr.univamu.iut.r401architecturelogicielle;
+package menu.menus;
 
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
