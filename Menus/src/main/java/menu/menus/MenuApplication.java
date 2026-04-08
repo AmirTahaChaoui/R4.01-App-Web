@@ -22,7 +22,7 @@ public class MenuApplication extends Application {
         MenuRepositoryMariadb db = null;
 
         try{
-            db = new MenuRepositoryMariadb("jdbc:mariadb://mysql-[compte].alwaysdata.net/[compte]_library_db", "[compte]_library", "mdp");
+            db = new MenuRepositoryMariadb("jdbc:mariadb://mysql-dashmed-site.alwaysdata.net", "dashmed-site_labubu", "DreamTeam1");
         }
         catch (Exception e){
             System.err.println(e.getMessage());

@@ -8,7 +8,7 @@ import java.util.*;
 public interface MenuRepositoryInterface {
 
     /**
-     * Méthode fermant le dépôt où sont stockées les informations sur les menus
+     * Méthode fermant le dépôt avec lequel sont stockées les informations sur les menus
      */
     public void close();
 
@@ -38,10 +38,10 @@ public interface MenuRepositoryInterface {
      * @param nom nouveau nom
      * @param platsIds nouvelle liste de plats
      * @param auteur auteur du menu
-     * @param dateCreation date de mise à jour
+     * @param dateModification date de modification
      * @return true si le menu existe et la mise à jour a été faite, false sinon
      */
-    public boolean updateMenu(int id, String nom, List<Integer> platsIds, String auteur, String dateCreation);
+    public boolean updateMenu(int id, String nom, List<Integer> platsIds, String auteur, String dateModification);
 
     /**
      * Méthode permettant de supprimer un menu

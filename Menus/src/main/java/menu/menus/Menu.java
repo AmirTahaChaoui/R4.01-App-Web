@@ -1,4 +1,4 @@
-package fr.univamu.iut.menu;
+package menu.menus;
 
 import java.util.List;
 
@@ -28,9 +28,14 @@ public class Menu {
     protected String auteur;
 
     /**
-     * Date de création ou de mise à jour du menu
+     * Date de création
      */
     protected String dateCreation;
+
+    /**
+     * Date de Modification
+     */
+    protected String dateModification;
 
     /**
      * Constructeur par défaut
@@ -45,13 +50,15 @@ public class Menu {
      * @param platsIds liste des ids des plats
      * @param auteur créateur du menu
      * @param dateCreation date de création
+     * @param dateModification date de modification
      */
-    public Menu(int id, String nom, List<Integer> platsIds, String auteur, String dateCreation) {
+    public Menu(int id, String nom, List<Integer> platsIds, String auteur, String dateCreation, String dateModification) {
         this.id = id;
         this.nom = nom;
         this.platsIds = platsIds;
         this.auteur = auteur;
         this.dateCreation = dateCreation;
+        this.dateModification = dateModification;
     }
 
     /**
@@ -90,6 +97,13 @@ public class Menu {
     }
 
     /**
+     * Accéder à la date de modification
+     */
+    public String getDateModification() {
+        return dateModification;
+    }
+
+    /**
      * Modifier l'id
      */
     public void setId(int id) {
@@ -122,6 +136,13 @@ public class Menu {
      */
     public void setDateCreation(String dateCreation) {
         this.dateCreation = dateCreation;
+    }
+
+    /**
+     * Modifier la date de modification
+     */
+    public void setDateModification(String dateModification) {
+        this.dateModification = dateModification;
     }
 
     @Override

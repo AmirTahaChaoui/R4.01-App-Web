@@ -58,7 +58,7 @@ public class MenuRepositoryMariadb implements MenuRepositoryInterface, Closeable
                         .map(Integer::parseInt)
                         .toList();
 
-                selectedMenu = new Menu(id, nom, platsIds, auteur, dateCreation);
+                selectedMenu = new Menu(id, nom, platsIds, auteur, dateCreation, null);
             }
 
         } catch (SQLException e) {
@@ -88,12 +88,13 @@ public class MenuRepositoryMariadb implements MenuRepositoryInterface, Closeable
                 String plats = result.getString("platsIds");
                 String auteur = result.getString("auteur");
                 String dateCreation = result.getString("dateCreation");
+                String dateModification = result.getString("dateModification");
 
                 List<Integer> platsIds = Arrays.stream(plats.split(","))
                         .map(Integer::parseInt)
                         .toList();
 
-                Menu currentMenu = new Menu(id, nom, platsIds, auteur, dateCreation, );
+                Menu currentMenu = new Menu(id, nom, platsIds, auteur, dateCreation, dateModification  );
 
                 listMenus.add(currentMenu);
             }
@@ -110,10 +111,6 @@ public class MenuRepositoryMariadb implements MenuRepositoryInterface, Closeable
         return false;
     }
 
-    @Override
-    public boolean updateMenu(int id, String nom, List<Integer> platsIds, String auteur, String dateCreation, String dateModification) {
-        return false;
-    }
 
     @Override
     public boolean deleteMenu(int id) {
@@ -121,9 +118,9 @@ public class MenuRepositoryMariadb implements MenuRepositoryInterface, Closeable
     }
 
     @Override
-    public boolean updateMenu(int id, String nom, List<Integer> platsIds, String auteur, String dateCreation) {
+    public boolean updateMenu(int id, String nom, List<Integer> platsIds, String auteur, String dateModification) {
 
-        String query = "UPDATE Menu SET nom=?, platsIds=?, auteur=?, dateCreation=? WHERE id=?";
+        String query = "UPDATE Menu SET nom=?, platsIds=?, auteur=?, dateModification=? WHERE id=?";
         int nbRowModified = 0;
 
         try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
@@ -135,7 +132,7 @@ public class MenuRepositoryMariadb implements MenuRepositoryInterface, Closeable
             ps.setString(1, nom);
             ps.setString(2, plats);
             ps.setString(3, auteur);
-            ps.setString(4, dateCreation);
+            ps.setString(4, dateModification);
             ps.setInt(5, id);
 
             nbRowModified = ps.executeUpdate();

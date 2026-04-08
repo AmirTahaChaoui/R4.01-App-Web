@@ -11,6 +11,7 @@ import jakarta.ws.rs.core.Response;
  * (point d'accès de l'API REST)
  */
 @Path("/menus")
+@ApplicationScoped
 public class MenuResource {
 
     /**
