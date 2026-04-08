@@ -13,26 +13,26 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.source>21</maven.compiler.source>
-        <junit.version>5.11.0</junit.version>
+        <version.jersey>3.1.5</version.jersey>
     </properties>
 
     <dependencies>
-        <!-- Jersey avec Grizzly : serveur HTTP embarqué, aucune config XML nécessaire -->
+        <!-- Jersey avec Grizzly pour l'exécution avec un Main -->
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-grizzly2-http</artifactId>
-            <version>3.1.5</version>
+            <version>${version.jersey}</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
-            <version>3.1.5</version>
+            <version>${version.jersey}</version>
         </dependency>
-        <!-- Sérialisation JSON via JSON-B (Yasson) -->
+        <!-- Support JSON-B (Yasson) pour la sérialisation -->
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-binding</artifactId>
-            <version>3.1.5</version>
+            <version>${version.jersey}</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse</groupId>
@@ -40,42 +40,25 @@
             <version>3.0.3</version>
         </dependency>
 
+        <!-- APIs Jakarta (utilisées dans le code) -->
+        <dependency>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
         <!-- Tests -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
+            <version>5.11.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Tout regrouper dans un seul JAR exécutable -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.6.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>plats.Main</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!-- Plugin pour lancer le Main facilement via Maven -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
