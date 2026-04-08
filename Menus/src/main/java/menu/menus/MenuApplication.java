@@ -6,35 +6,42 @@ import jakarta.enterprise.inject.Produces;
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
 
+import menu.menus.domain.repositories.MenuRepositoryInterface;
+import menu.menus.infrastructure.repositories.MenuRepositoryMariadb;
 
+/**
+ * Point d'entrée pour l'application REST
+ * Définit le chemin de base pour tous les endpoints API (/api)
+ */
 @ApplicationPath("/api")
 @ApplicationScoped
 public class MenuApplication extends Application {
 
     /**
-     * Méthode appelée par l'API CDI pour injecter la connection à la base de données au moment de la création
-     * de la ressource
-     * @return un objet implémentant l'interface MenuRepositoryInterface utilisée
-     *          pour accéder aux données des livres, voire les modifier
+     * Méthode appelée par l'API CDI pour injecter la connexion à la base de données
+     * @return un objet implémentant l'interface MenuRepositoryInterface
      */
     @Produces
-    private MenuRepositoryInterface openDbConnection(){
+    public MenuRepositoryInterface openDbConnection() {
         MenuRepositoryMariadb db = null;
 
-        try{
-            db = new MenuRepositoryMariadb("jdbc:mariadb://mysql-dashmed-site.alwaysdata.net", "dashmed-site_labubu", "DreamTeam1");
-        }
-        catch (Exception e){
+        try {
+            db = new MenuRepositoryMariadb(
+                    "jd::b/c:mariadb://mysql-dashmeenusd-site.alwaysdata.net/menus",
+                    "dashmed-site_labubu",
+                    "DreamTeam1"
+            );
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
         return db;
     }
 
     /**
-     * Méthode permettant de fermer la connexion à la base de données lorsque l'application est arrêtée
-     * @param MenuRepo la connexion à la base de données instanciée dans la méthode @openDbConnection
+     * Méthode permettant de fermer la connexion à la base de données
+     * @param menuRepo la connexion à fermer
      */
-    private void closeDbConnection(@Disposes MenuRepositoryInterface MenuRepo ) {
-        MenuRepo.close();
+    public void closeDbConnection(@Disposes MenuRepositoryInterface menuRepo) {
+        menuRepo.close();
     }
 }

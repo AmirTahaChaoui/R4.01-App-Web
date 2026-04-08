@@ -1,41 +1,19 @@
-package menu.menus;
+package menu.menus.domain.entities;
 
 import java.util.List;
 
 /**
- * Classe représentant un menu
+ * Entité représentant un menu
+ * POJO pur - AUCUNE dépendance framework
  */
 public class Menu {
 
-    /**
-     * Identifiant du menu
-     */
-    protected int id;
-
-    /**
-     * Nom du menu
-     */
-    protected String nom;
-
-    /**
-     * Liste des identifiants des plats composant le menu
-     */
-    protected List<Integer> platsIds;
-
-    /**
-     * Nom de la personne ayant créé le menu
-     */
-    protected String auteur;
-
-    /**
-     * Date de création
-     */
-    protected String dateCreation;
-
-    /**
-     * Date de Modification
-     */
-    protected String dateModification;
+    private int id;
+    private String nom;
+    private List<Integer> platsIds;
+    private String auteur;
+    private String dateCreation;
+    private String dateModification;
 
     /**
      * Constructeur par défaut
@@ -61,86 +39,50 @@ public class Menu {
         this.dateModification = dateModification;
     }
 
-    /**
-     * Accéder à l'id du menu
-     */
     public int getId() {
         return id;
     }
 
-    /**
-     * Accéder au nom du menu
-     */
-    public String getNom() {
-        return nom;
-    }
-
-    /**
-     * Accéder aux ids des plats
-     */
-    public List<Integer> getPlatsIds() {
-        return platsIds;
-    }
-
-    /**
-     * Accéder à l'auteur
-     */
-    public String getAuteur() {
-        return auteur;
-    }
-
-    /**
-     * Accéder à la date de création
-     */
-    public String getDateCreation() {
-        return dateCreation;
-    }
-
-    /**
-     * Accéder à la date de modification
-     */
-    public String getDateModification() {
-        return dateModification;
-    }
-
-    /**
-     * Modifier l'id
-     */
     public void setId(int id) {
         this.id = id;
     }
 
-    /**
-     * Modifier le nom
-     */
+    public String getNom() {
+        return nom;
+    }
+
     public void setNom(String nom) {
         this.nom = nom;
     }
 
-    /**
-     * Modifier la liste des plats
-     */
+    public List<Integer> getPlatsIds() {
+        return platsIds;
+    }
+
     public void setPlatsIds(List<Integer> platsIds) {
         this.platsIds = platsIds;
     }
 
-    /**
-     * Modifier l'auteur
-     */
+    public String getAuteur() {
+        return auteur;
+    }
+
     public void setAuteur(String auteur) {
         this.auteur = auteur;
     }
 
-    /**
-     * Modifier la date de création
-     */
+    public String getDateCreation() {
+        return dateCreation;
+    }
+
     public void setDateCreation(String dateCreation) {
         this.dateCreation = dateCreation;
     }
 
-    /**
-     * Modifier la date de modification
-     */
+    public String getDateModification() {
+        return dateModification;
+    }
+
     public void setDateModification(String dateModification) {
         this.dateModification = dateModification;
     }
@@ -153,6 +95,7 @@ public class Menu {
                 ", platsIds=" + platsIds +
                 ", auteur='" + auteur + '\'' +
                 ", dateCreation='" + dateCreation + '\'' +
+                ", dateModification='" + dateModification + '\'' +
                 '}';
     }
 }
