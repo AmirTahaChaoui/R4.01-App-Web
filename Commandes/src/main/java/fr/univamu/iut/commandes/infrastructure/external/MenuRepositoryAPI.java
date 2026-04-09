@@ -27,9 +27,14 @@ public class MenuRepositoryAPI implements MenuRepository {
             Response response = target.path("menus/" + id)
                     .request(MediaType.APPLICATION_JSON)
                     .get();
-            if (response.getStatus() == 200) {
+            if (response.getStatus() == 200 || response.getStatus() == 201) {
                 return response.readEntity(Menu.class);
             }
+            return null;
+        } catch (Exception e) {
+            System.err.println("Erreur de connexion au service Menus (" + url + ") : " + e.getMessage());
+            // En cas d'erreur (ex: service indisponible), on retourne null 
+            // pour permettre à la commande d'être créée avec un prix de 0.
             return null;
         } finally {
             client.close();

@@ -1,7 +1,11 @@
 package fr.univamu.iut.commandes.domain;
 
+import jakarta.json.bind.annotation.JsonbProperty;
+
 public class Menu {
     protected Long id;
+    
+    @JsonbProperty("prixTotal")
     protected Double prix;
 
     public Menu() {}
