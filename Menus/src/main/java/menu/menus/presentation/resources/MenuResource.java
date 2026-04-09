@@ -8,10 +8,10 @@ import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 
 import menu.menus.application.services.MenuService;
+import menu.menus.application.services.MenuRepositoryInterface;
+import menu.menus.application.services.PlatsRepositoryInterface;
 import menu.menus.domain.entities.Menu;
 import menu.menus.domain.entities.MenuEnrichi;
-import menu.menus.domain.repositories.MenuRepositoryInterface;
-import menu.menus.domain.repositories.PlatsRepositoryInterface;
 
 import java.util.ArrayList;
 
@@ -89,20 +89,28 @@ public class MenuResource {
      * POST /api/menus
      * Crée un nouveau menu
      * @param menu menu à créer (au format JSON)
-     * @return réponse avec statut 201 si création réussie
+     * @return réponse avec le menu créé et ses détails complets (statut 201)
      */
     @POST
     @Consumes("application/json")
+    @Produces("application/json")
     public Response createMenu(Menu menu) {
         try {
             if (menu == null || menu.getNom() == null || menu.getNom().isEmpty()) {
                 return Response.status(400).entity("Données invalides: le nom est requis").build();
             }
 
-            if (service.addMenu(menu)) {
-                return Response.status(201).entity("Menu créé avec succès").build();
+            int newMenuId = service.addMenu(menu);
+            if (newMenuId > 0) {
+                // Récupérer le menu créé enrichi avec tous les détails
+                MenuEnrichi menuCreated = service.getMenuEnrichi(newMenuId);
+                try (Jsonb jsonb = JsonbBuilder.create()) {
+                    return Response.status(201)
+                            .entity(jsonb.toJson(menuCreated))
+                            .build();
+                }
             } else {
-                return Response.status(400).entity("Erreur lors de la création du menu").build();
+                return Response.status(400).entity("Erreur lors de la création du menu: plats invalides").build();
             }
         } catch (Exception e) {
             System.err.println("Erreur lors de la création du menu: " + e.getMessage());
@@ -115,11 +123,12 @@ public class MenuResource {
      * Met à jour un menu existant
      * @param id identifiant du menu à mettre à jour
      * @param menu nouvelles données du menu
-     * @return réponse de succès ou erreur
+     * @return réponse avec le menu mis à jour et ses détails complets enrichis
      */
     @PUT
     @Path("{id}")
     @Consumes("application/json")
+    @Produces("application/json")
     public Response updateMenu(@PathParam("id") int id, Menu menu) {
         try {
             if (menu == null || menu.getNom() == null || menu.getNom().isEmpty()) {
@@ -127,9 +136,15 @@ public class MenuResource {
             }
 
             if (service.updateMenu(id, menu)) {
-                return Response.ok("Menu mis à jour avec succès").build();
+                // Récupérer le menu mis à jour avec tous les détails enrichis
+                MenuEnrichi menuUpdated = service.getMenuEnrichi(id);
+                try (Jsonb jsonb = JsonbBuilder.create()) {
+                    return Response.ok()
+                            .entity(jsonb.toJson(menuUpdated))
+                            .build();
+                }
             } else {
-                return Response.status(404).entity("Menu non trouvé").build();
+                return Response.status(404).entity("Menu non trouvé ou plats invalides").build();
             }
         } catch (Exception e) {
             System.err.println("Erreur lors de la mise à jour du menu: " + e.getMessage());

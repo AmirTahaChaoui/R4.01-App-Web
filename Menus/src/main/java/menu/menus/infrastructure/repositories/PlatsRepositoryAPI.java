@@ -1,7 +1,7 @@
 package menu.menus.infrastructure.repositories;
 
 import menu.menus.domain.entities.Plat;
-import menu.menus.domain.repositories.PlatsRepositoryInterface;
+import menu.menus.application.services.PlatsRepositoryInterface;
 
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
