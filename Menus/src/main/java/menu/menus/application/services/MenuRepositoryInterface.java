@@ -1,4 +1,4 @@
-package menu.menus.domain.repositories;
+package menu.menus.application.services;
 
 import menu.menus.domain.entities.Menu;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Interface définissant le contrat pour accéder aux données des menus
- * Couche Domain - aucune dépendance d'implémentation concrète
+ * Couche Application - Contrat pour les implémentations du repository
  */
 public interface MenuRepositoryInterface {
 
@@ -26,9 +26,9 @@ public interface MenuRepositoryInterface {
     /**
      * Ajoute un nouveau menu
      * @param menu le menu à ajouter
-     * @return true si ajout réussi
+     * @return l'ID du menu créé, ou -1 si l'ajout a échoué
      */
-    boolean addMenu(Menu menu);
+    int addMenu(Menu menu);
 
     /**
      * Supprime un menu

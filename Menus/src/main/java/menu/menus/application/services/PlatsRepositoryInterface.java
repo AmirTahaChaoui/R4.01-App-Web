@@ -1,11 +1,11 @@
-package menu.menus.domain.repositories;
+package menu.menus.application.services;
 
 import menu.menus.domain.entities.Plat;
 import java.util.ArrayList;
 
 /**
  * Interface définissant le contrat pour accéder à l'API des plats
- * Couche Domain - aucune dépendance d'implémentation concrète
+ * Couche Application - Contrat pour les implémentations du repository
  */
 public interface PlatsRepositoryInterface {
 
