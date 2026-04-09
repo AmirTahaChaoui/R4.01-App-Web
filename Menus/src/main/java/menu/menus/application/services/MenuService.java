@@ -73,6 +73,45 @@ public class MenuService {
     }
 
     /**
+     * Valide que tous les plats du menu existent dans la base de données
+     * @param platsIds liste des IDs des plats à valider
+     * @return true si tous les plats existent, false sinon
+     */
+    private boolean validerPlats(java.util.List<Integer> platsIds) {
+        if (platsIds == null || platsIds.isEmpty()) {
+            System.err.println("Erreur : Le menu doit contenir au moins un plat");
+            return false;
+        }
+
+        for (Integer platId : platsIds) {
+            Plat plat = platsRepo.getPlat(platId);
+            if (plat == null) {
+                System.err.println("Erreur : Le plat avec l'ID " + platId + " n'existe pas");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Retourne la liste des plats du menu enrichis avec tous les détails
+     * @param platsIds liste des IDs des plats
+     * @return liste des plats complets
+     */
+    public ArrayList<Plat> getPlatsEnrichis(java.util.List<Integer> platsIds) {
+        ArrayList<Plat> platsComplets = new ArrayList<>();
+        
+        for (Integer platId : platsIds) {
+            Plat plat = platsRepo.getPlat(platId);
+            if (plat != null) {
+                platsComplets.add(plat);
+            }
+        }
+        
+        return platsComplets;
+    }
+
+    /**
      * Récupère tous les menus enrichis
      * @return liste de tous les menus avec infos complètes des plats
      */
@@ -101,11 +140,16 @@ public class MenuService {
     }
 
     /**
-     * Ajoute un nouveau menu
+     * Ajoute un nouveau menu après validation des plats
      * @param menu le menu à ajouter
-     * @return true si ajout réussi
+     * @return true si ajout réussi, false si les plats ne sont pas valides
      */
     public boolean addMenu(Menu menu) {
+        // Valider que tous les plats existent
+        if (!validerPlats(menu.getPlatsIds())) {
+            return false;
+        }
+
         // Initialiser la date de création si elle est nulle
         if (menu.getDateCreation() == null) {
             menu.setDateCreation(String.valueOf(LocalDate.now()));
@@ -117,12 +161,17 @@ public class MenuService {
     }
 
     /**
-     * Met à jour un menu
+     * Met à jour un menu après validation des plats
      * @param id id du menu à mettre à jour
      * @param menu les nouvelles informations
-     * @return true si mise à jour réussie
+     * @return true si mise à jour réussie, false si les plats ne sont pas valides
      */
     public boolean updateMenu(int id, Menu menu) {
+        // Valider que tous les plats existent
+        if (!validerPlats(menu.getPlatsIds())) {
+            return false;
+        }
+
         return menuRepo.updateMenu(
                 id,
                 menu.getNom(),
