@@ -69,6 +69,23 @@ package "3 APPLICATION LAYER (USE CASES)" <<frame>> #87CEEB {
         - validerPlats(platsIds: List<Integer>): boolean
         - getPlatsEnrichis(platsIds: List<Integer>): List<Plat>
     }
+    
+    package "Repository Interfaces" {
+        interface MenuRepositoryInterface {
+            + getMenu(id: int): Menu
+            + getAllMenus(): List<Menu>
+            + addMenu(menu: Menu): boolean
+            + updateMenu(id: int, menu: Menu): boolean
+            + deleteMenu(id: int): boolean
+            + close(): void
+        }
+        
+        interface PlatsRepositoryInterface {
+            + getPlat(id: int): Plat
+            + getAllPlats(): List<Plat>
+            + close(): void
+        }
+    }
 }
 
 ' ============================================
@@ -102,23 +119,6 @@ package "2 DOMAIN LAYER (CORE - POJO PURE)" <<frame>> #90EE90 {
             - dateCreation: String
             - dateModification: String
             - prixTotal: double
-        }
-    }
-    
-    package "Repository Interfaces" {
-        interface MenuRepositoryInterface {
-            + getMenu(id: int): Menu
-            + getAllMenus(): List<Menu>
-            + addMenu(menu: Menu): boolean
-            + updateMenu(id: int, menu: Menu): boolean
-            + deleteMenu(id: int): boolean
-            + close(): void
-        }
-        
-        interface PlatsRepositoryInterface {
-            + getPlat(id: int): Plat
-            + getAllPlats(): List<Plat>
-            + close(): void
         }
     }
 }
@@ -233,19 +233,17 @@ src/main/java/menu/menus/
 │   │   ├── Menu.java                 (simple POJO - no framework)
 │   │   ├── Plat.java                 (simple POJO - no framework)
 │   │   └── MenuEnrichi.java          (simple POJO - no framework)
-│   │
-│   └── repositories/ (Interfaces)
-│       ├── MenuRepositoryInterface.java   (contract)
-│       └── PlatsRepositoryInterface.java  (contract)
 │
 ├── application/                       🔄 APPLICATION LAYER (Business Logic)
 │   └── services/
-│       └── MenuService.java           (use cases, validation, enrichment)
+│       ├── MenuService.java                    (use cases, validation, enrichment)
+│       ├── MenuRepositoryInterface.java        (contract - repository interfaces)
+│       └── PlatsRepositoryInterface.java       (contract - repository interfaces)
 │
 ├── infrastructure/                    🔌 INFRASTRUCTURE LAYER (Implementations)
 │   └── repositories/
 │       ├── MenuRepositoryMariadb.java (MariaDB implementation)
-│       ├── PlatsRepositoryJSON.java   (JSON file implementation)  ← NEW
+│       ├── PlatsRepositoryJSON.java   (JSON file implementation)
 │       └── PlatsRepositoryAPI.java    (REST API implementation)
 │
 └── presentation/                      📡 PRESENTATION LAYER (REST)

@@ -8,12 +8,9 @@ import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 
 import menu.menus.application.services.MenuService;
+import menu.menus.application.services.MenuRepositoryInterface;
+import menu.menus.application.services.PlatsRepositoryInterface;
 import menu.menus.domain.entities.Menu;
-import menu.menus.domain.entities.MenuEnrichi;
-import menu.menus.domain.repositories.MenuRepositoryInterface;
-import menu.menus.domain.repositories.PlatsRepositoryInterface;
-
-import java.util.ArrayList;
 
 /**
  * Ressource REST pour l'API des menus

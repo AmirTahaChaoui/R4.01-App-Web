@@ -1,7 +1,7 @@
 package menu.menus.infrastructure.repositories;
 
 import menu.menus.domain.entities.Menu;
-import menu.menus.domain.repositories.MenuRepositoryInterface;
+import menu.menus.application.services.MenuRepositoryInterface;
 
 import java.io.Closeable;
 import java.sql.*;

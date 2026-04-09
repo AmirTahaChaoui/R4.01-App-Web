@@ -6,8 +6,8 @@ import jakarta.enterprise.inject.Produces;
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
 
-import menu.menus.domain.repositories.MenuRepositoryInterface;
-import menu.menus.domain.repositories.PlatsRepositoryInterface;
+import menu.menus.application.services.MenuRepositoryInterface;
+import menu.menus.application.services.PlatsRepositoryInterface;
 import menu.menus.infrastructure.repositories.MenuRepositoryMariadb;
 import menu.menus.infrastructure.repositories.PlatsRepositoryJSON;
 

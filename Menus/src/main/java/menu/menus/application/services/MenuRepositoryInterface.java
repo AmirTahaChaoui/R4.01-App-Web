@@ -1,4 +1,4 @@
-package menu.menus.domain.repositories;
+package menu.menus.application.services;
 
 import menu.menus.domain.entities.Menu;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Interface définissant le contrat pour accéder aux données des menus
- * Couche Domain - aucune dépendance d'implémentation concrète
+ * Couche Application - Contrat pour les implémentations du repository
  */
 public interface MenuRepositoryInterface {
 

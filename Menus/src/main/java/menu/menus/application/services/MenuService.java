@@ -3,8 +3,6 @@ package menu.menus.application.services;
 import menu.menus.domain.entities.Menu;
 import menu.menus.domain.entities.MenuEnrichi;
 import menu.menus.domain.entities.Plat;
-import menu.menus.domain.repositories.MenuRepositoryInterface;
-import menu.menus.domain.repositories.PlatsRepositoryInterface;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
