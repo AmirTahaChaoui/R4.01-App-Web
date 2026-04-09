@@ -1,10 +1,14 @@
-package plats.model;
+package plats.domain.entities;
 
 public class Plat {
     private int id;
     private String nom;
     private String description;
     private double prix;
+
+    // Constructeur vide pour Jersey/JSON-B
+    public Plat() {
+    }
 
     public Plat(int id, String nom, String description, double prix) {
         this.id = id;

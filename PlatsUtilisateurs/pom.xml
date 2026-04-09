@@ -28,7 +28,8 @@
             <artifactId>jersey-hk2</artifactId>
             <version>${version.jersey}</version>
         </dependency>
-        <!-- Support JSON-B (Yasson) pour la sérialisation -->
+        
+        <!-- Support JSON-B pour transformer les objets en JSON -->
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-binding</artifactId>
@@ -40,14 +41,32 @@
             <version>3.0.3</version>
         </dependency>
 
-        <!-- APIs Jakarta (utilisées dans le code) -->
+        <!-- APIs Jakarta -->
         <dependency>
             <groupId>jakarta.ws.rs</groupId>
             <artifactId>jakarta.ws.rs-api</artifactId>
             <version>3.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+            <version>4.0.1</version>
+        </dependency>
 
-        <!-- Tests -->
+        <!-- Implémentation CDI avec Weld -->
+        <dependency>
+            <groupId>org.jboss.weld.se</groupId>
+            <artifactId>weld-se-core</artifactId>
+            <version>5.1.2.Final</version>
+        </dependency>
+        <!-- Lien entre Jersey et CDI -->
+        <dependency>
+            <groupId>org.glassfish.jersey.ext.cdi</groupId>
+            <artifactId>jersey-cdi-rs-inject</artifactId>
+            <version>${version.jersey}</version>
+        </dependency>
+
+        <!-- Tests JUnit -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>

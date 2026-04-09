@@ -1,4 +1,4 @@
-package plats.model;
+package plats.domain.entities;
 
 public class Utilisateur {
     private int id;
@@ -6,6 +6,10 @@ public class Utilisateur {
     private String prenom;
     private String email;
     private String adresse;
+
+    // Constructeur vide pour Jersey/JSON-B
+    public Utilisateur() {
+    }
 
     public Utilisateur(int id, String nom, String prenom, String email, String adresse) {
         this.id = id;

@@ -1,29 +1,31 @@
-package plats.resources;
+package plats.presentation.resources;
 
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import plats.model.Utilisateur;
-import plats.dao.UtilisateurDAO;
+import plats.domain.entities.Utilisateur;
+import plats.application.services.UtilisateurService;
 
 import java.util.List;
 
 @Path("/utilisateurs")
 public class UtilisateurResource {
 
-    private final UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
+    @Inject
+    private UtilisateurService utilisateurService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Utilisateur> getAll() {
-        return utilisateurDAO.getAll();
+        return utilisateurService.getAllUtilisateurs();
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@PathParam("id") int id) {
-        Utilisateur utilisateur = utilisateurDAO.getById(id);
+        Utilisateur utilisateur = utilisateurService.getUtilisateurById(id);
         if (utilisateur != null) {
             return Response.ok(utilisateur).build();
         } else {
@@ -35,7 +37,7 @@ public class UtilisateurResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(Utilisateur utilisateur) {
-        utilisateurDAO.create(utilisateur);
+        utilisateurService.addUtilisateur(utilisateur);
         return Response.status(Response.Status.CREATED).entity(utilisateur).build();
     }
 
@@ -45,7 +47,7 @@ public class UtilisateurResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response update(@PathParam("id") int id, Utilisateur utilisateurUpdate) {
         utilisateurUpdate.setId(id);
-        Utilisateur utilisateur = utilisateurDAO.update(utilisateurUpdate);
+        Utilisateur utilisateur = utilisateurService.updateUtilisateur(utilisateurUpdate);
         if (utilisateur != null) {
             return Response.ok(utilisateur).build();
         } else {
@@ -56,7 +58,7 @@ public class UtilisateurResource {
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") int id) {
-        if (utilisateurDAO.delete(id)) {
+        if (utilisateurService.deleteUtilisateur(id)) {
             return Response.noContent().build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
