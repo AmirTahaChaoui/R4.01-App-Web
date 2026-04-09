@@ -11,6 +11,9 @@ import menu.menus.application.services.MenuService;
 import menu.menus.application.services.MenuRepositoryInterface;
 import menu.menus.application.services.PlatsRepositoryInterface;
 import menu.menus.domain.entities.Menu;
+import menu.menus.domain.entities.MenuEnrichi;
+
+import java.util.ArrayList;
 
 /**
  * Ressource REST pour l'API des menus
