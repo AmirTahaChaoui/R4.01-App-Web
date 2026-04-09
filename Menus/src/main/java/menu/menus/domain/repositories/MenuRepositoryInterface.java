@@ -26,9 +26,9 @@ public interface MenuRepositoryInterface {
     /**
      * Ajoute un nouveau menu
      * @param menu le menu à ajouter
-     * @return true si ajout réussi
+     * @return l'ID du menu créé, ou -1 si l'ajout a échoué
      */
-    boolean addMenu(Menu menu);
+    int addMenu(Menu menu);
 
     /**
      * Supprime un menu

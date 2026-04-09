@@ -79,10 +79,10 @@ public class MenuRepositoryMariadb implements MenuRepositoryInterface, Closeable
     }
 
     @Override
-    public boolean addMenu(Menu menu) {
+    public int addMenu(Menu menu) {
         String query = "INSERT INTO Menu (nom, platsIds, auteur, dateCreation, dateModification) VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
+        try (PreparedStatement ps = dbConnection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             String plats = String.join(",",
                     menu.getPlatsIds().stream().map(String::valueOf).toList());
 
@@ -93,12 +93,19 @@ public class MenuRepositoryMariadb implements MenuRepositoryInterface, Closeable
             ps.setString(5, menu.getDateModification());
 
             int nbRowInserted = ps.executeUpdate();
-            return nbRowInserted > 0;
+            if (nbRowInserted > 0) {
+                ResultSet generatedKeys = ps.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int generatedId = generatedKeys.getInt(1);
+                    System.out.println("✅ Menu créé avec l'ID: " + generatedId);
+                    return generatedId;
+                }
+            }
         } catch (SQLException e) {
             System.err.println("Erreur lors de l'ajout du menu: " + e.getMessage());
         }
 
-        return false;
+        return -1;
     }
 
     @Override

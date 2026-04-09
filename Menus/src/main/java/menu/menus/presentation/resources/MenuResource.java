@@ -100,14 +100,13 @@ public class MenuResource {
                 return Response.status(400).entity("Données invalides: le nom est requis").build();
             }
 
-            if (service.addMenu(menu)) {
-                // Récupérer le menu créé avec tous les détails
-                ArrayList<Menu> allMenus = new ArrayList<>();
-                // Pour obtenir l'ID, il faudrait le retourner du service
-                // Pour l'instant on retourne 201 avec un message
+            int newMenuId = service.addMenu(menu);
+            if (newMenuId > 0) {
+                // Récupérer le menu créé enrichi avec tous les détails
+                MenuEnrichi menuCreated = service.getMenuEnrichi(newMenuId);
                 try (Jsonb jsonb = JsonbBuilder.create()) {
                     return Response.status(201)
-                            .entity(jsonb.toJson(menu))
+                            .entity(jsonb.toJson(menuCreated))
                             .build();
                 }
             } else {

@@ -39,7 +39,7 @@ title Menus API - Architecture Clean
 ' ============================================
 ' COUCHE 4 : PRESENTATION (REST)
 ' ============================================
-package "4️⃣ PRESENTATION LAYER (REST API)" <<frame>> #FFA07A {
+package "4 PRESENTATION LAYER (REST API)" <<frame>> #FFA07A {
     class MenuResource {
         - service: MenuService
         --
@@ -54,27 +54,29 @@ package "4️⃣ PRESENTATION LAYER (REST API)" <<frame>> #FFA07A {
 ' ============================================
 ' COUCHE 3 : APPLICATION (BUSINESS LOGIC)
 ' ============================================
-package "3️⃣ APPLICATION LAYER (USE CASES)" <<frame>> #87CEEB {
+package "3 APPLICATION LAYER (USE CASES)" <<frame>> #87CEEB {
     class MenuService {
         - menuRepo: MenuRepositoryInterface
         - platsRepo: PlatsRepositoryInterface
         --
-        + getAllMenusEnrichis(): ArrayList<MenuEnrichi>
+        + getAllMenusEnrichis(): List<MenuEnrichi>
         + getMenuEnrichi(id: int): MenuEnrichi
         + addMenu(menu: Menu): boolean
         + updateMenu(id: int, menu: Menu): boolean
         + deleteMenu(id: int): boolean
+        --
         - enrichirMenu(menu: Menu): MenuEnrichi
-        - validerPlats(platsIds: List): boolean
-        - getPlatsEnrichis(platsIds: List): ArrayList<Plat>
+        - validerPlats(platsIds: List<Integer>): boolean
+        - getPlatsEnrichis(platsIds: List<Integer>): List<Plat>
     }
 }
 
 ' ============================================
 ' COUCHE 2 : DOMAIN (CORE BUSINESS)
 ' ============================================
-package "2️⃣ DOMAIN LAYER (CORE - POJO PURE)" <<frame>> #90EE90 {
-    package "📦 Entities" {
+package "2 DOMAIN LAYER (CORE - POJO PURE)" <<frame>> #90EE90 {
+
+    package "Entities" {
         class Menu {
             - id: int
             - nom: String
@@ -103,20 +105,20 @@ package "2️⃣ DOMAIN LAYER (CORE - POJO PURE)" <<frame>> #90EE90 {
         }
     }
     
-    package "🔌 Repository Interfaces" {
+    package "Repository Interfaces" {
         interface MenuRepositoryInterface {
-            {abstract} + getMenu(id: int): Menu
-            {abstract} + getAllMenus(): ArrayList<Menu>
-            {abstract} + addMenu(menu: Menu): boolean
-            {abstract} + updateMenu(...): boolean
-            {abstract} + deleteMenu(id: int): boolean
-            {abstract} + close(): void
+            + getMenu(id: int): Menu
+            + getAllMenus(): List<Menu>
+            + addMenu(menu: Menu): boolean
+            + updateMenu(id: int, menu: Menu): boolean
+            + deleteMenu(id: int): boolean
+            + close(): void
         }
         
         interface PlatsRepositoryInterface {
-            {abstract} + getPlat(id: int): Plat
-            {abstract} + getAllPlats(): ArrayList<Plat>
-            {abstract} + close(): void
+            + getPlat(id: int): Plat
+            + getAllPlats(): List<Plat>
+            + close(): void
         }
     }
 }
@@ -124,27 +126,28 @@ package "2️⃣ DOMAIN LAYER (CORE - POJO PURE)" <<frame>> #90EE90 {
 ' ============================================
 ' COUCHE 1 : INFRASTRUCTURE (DRIVERS)
 ' ============================================
-package "1️⃣ INFRASTRUCTURE LAYER (DRIVERS & ADAPTERS)" <<frame>> #FFD700 {
-    package "🗄️ Database" {
+package "1 INFRASTRUCTURE LAYER (DRIVERS & ADAPTERS)" <<frame>> #FFD700 {
+
+    package "Database" {
         class MenuRepositoryMariadb {
             - dbConnection: Connection
             --
             + getMenu(id: int): Menu
-            + getAllMenus(): ArrayList<Menu>
+            + getAllMenus(): List<Menu>
             + addMenu(menu: Menu): boolean
-            + updateMenu(...): boolean
+            + updateMenu(id: int, menu: Menu): boolean
             + deleteMenu(id: int): boolean
             + close(): void
         }
     }
     
-    package "📄 Data Sources" {
+    package "Data Sources" {
         class PlatsRepositoryJSON {
-            - plats: ArrayList<Plat>
+            - plats: List<Plat>
             - filePath: String
             --
             + getPlat(id: int): Plat
-            + getAllPlats(): ArrayList<Plat>
+            + getAllPlats(): List<Plat>
             + close(): void
         }
         
@@ -152,7 +155,7 @@ package "1️⃣ INFRASTRUCTURE LAYER (DRIVERS & ADAPTERS)" <<frame>> #FFD700 {
             - url: String
             --
             + getPlat(id: int): Plat
-            + getAllPlats(): ArrayList<Plat>
+            + getAllPlats(): List<Plat>
             + close(): void
         }
     }
@@ -161,56 +164,58 @@ package "1️⃣ INFRASTRUCTURE LAYER (DRIVERS & ADAPTERS)" <<frame>> #FFD700 {
 ' ============================================
 ' ENTRY POINT : CDI + REST
 ' ============================================
-package "🎯 APPLICATION BOOTSTRAP" <<frame>> #DDA0DD {
+package "APPLICATION BOOTSTRAP" <<frame>> #DDA0DD {
     class MenuApplication {
         --
-        +@Produces+ produceMenuRepository(): MenuRepositoryInterface
-        +@Disposes+ disposeMenuRepository(repo): void
-        +@Produces+ producePlatsRepository(): PlatsRepositoryInterface
-        +@Disposes+ disposePlatsRepository(repo): void
+        + produceMenuRepository(): MenuRepositoryInterface <<@Produces>>
+        + disposeMenuRepository(repo): void <<@Disposes>>
+        + producePlatsRepository(): PlatsRepositoryInterface <<@Produces>>
+        + disposePlatsRepository(repo): void <<@Disposes>>
     }
-    
-    note on right of MenuApplication
+
+    note right of MenuApplication
         Configuration CDI pour injection
-        des dépendances + Point d'entrée
-        REST (@ApplicationPath("/api"))
+        des dépendances
+        Point d'entrée REST
+        (@ApplicationPath("/api"))
     end note
 }
 
 ' ============================================
-' DÉPENDANCES (flèches dirigées)
+' DÉPENDANCES
 ' ============================================
 
 ' Presentation -> Application
-MenuResource --> MenuService: uses\n(injection CDI)
+MenuResource --> MenuService : uses
 
 ' Application -> Domain (interfaces)
-MenuService --> MenuRepositoryInterface: depends on
-MenuService --> PlatsRepositoryInterface: depends on
+MenuService --> MenuRepositoryInterface
+MenuService --> PlatsRepositoryInterface
 
 ' Application -> Domain (entities)
-MenuService --> Menu: uses
-MenuService -.-> MenuEnrichi: creates
-MenuService -.-> Plat: uses
+MenuService --> Menu
+MenuService --> Plat
+MenuService ..> MenuEnrichi : creates
 
-' Presentation -> Domain (working with)
-MenuResource -.-> Menu: consumes
-MenuResource -.-> MenuEnrichi: produces JSON
+' Presentation -> Domain
+MenuResource ..> Menu
+MenuResource ..> MenuEnrichi
 
-' Implementation -> Interface (realizes)
-MenuRepositoryMariadb ..|> MenuRepositoryInterface: implements
-PlatsRepositoryJSON ..|> PlatsRepositoryInterface: implements
-PlatsRepositoryAPI ..|> PlatsRepositoryInterface: implements
+' Implementation -> Interface
+MenuRepositoryMariadb ..|> MenuRepositoryInterface
+PlatsRepositoryJSON ..|> PlatsRepositoryInterface
+PlatsRepositoryAPI ..|> PlatsRepositoryInterface
 
 ' Infrastructure -> Domain
-MenuRepositoryMariadb --> Menu: reads/writes
+MenuRepositoryMariadb --> Menu
 
 ' CDI Production
-MenuApplication -.->|produces| MenuRepositoryInterface
+MenuApplication ..> MenuRepositoryInterface : produces
+MenuApplication ..> PlatsRepositoryInterface : produces
 
 ' Data sources
-PlatsRepositoryJSON -.-> Plat: loads from JSON
-PlatsRepositoryAPI -.-> Plat: fetches from API
+PlatsRepositoryJSON ..> Plat
+PlatsRepositoryAPI ..> Plat
 
 @enduml
 ```

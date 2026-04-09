@@ -142,12 +142,12 @@ public class MenuService {
     /**
      * Ajoute un nouveau menu après validation des plats
      * @param menu le menu à ajouter
-     * @return true si ajout réussi, false si les plats ne sont pas valides
+     * @return l'ID du menu créé, ou -1 si l'ajout a échoué (plats non valides)
      */
-    public boolean addMenu(Menu menu) {
+    public int addMenu(Menu menu) {
         // Valider que tous les plats existent
         if (!validerPlats(menu.getPlatsIds())) {
-            return false;
+            return -1;
         }
 
         // Initialiser la date de création si elle est nulle

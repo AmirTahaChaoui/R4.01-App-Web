@@ -57,8 +57,18 @@ public class MenuApplication extends Application {
      */
     @Produces
     public PlatsRepositoryInterface producePlatsRepository() {
-        // Chemin vers le fichier JSON au-dessus de la racine du projet Menus
-        String filePath = "../plats-utilisateurs.json";
+        // Cherche d'abord la variable d'environnement PLATS_JSON_PATH
+        String envPath = System.getenv("PLATS_JSON_PATH");
+        String filePath;
+        
+        if (envPath != null && !envPath.isEmpty()) {
+            filePath = envPath;
+        } else {
+            // Sinon utilise le chemin par défaut relatif à la racine du projet
+            filePath = "../plats-utilisateurs.json";
+        }
+        
+        System.out.println("🔧 PlatsRepositoryJSON via: " + filePath);
         return new PlatsRepositoryJSON(filePath);
     }
 
