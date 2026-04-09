@@ -220,6 +220,79 @@ PlatsRepositoryAPI ..> Plat
 @enduml
 ```
 
+---
+
+## 📐 Diagramme Simplifié (Vue Légère)
+
+```plantuml
+@startuml MenusArchitectureSimple
+skinparam backgroundColor #FEFEFE
+skinparam classBackgroundColor #F8F8F8
+skinparam classBorderColor #333333
+skinparam packageBackgroundColor #E8E8E8
+
+title Menus API - Architecture Simplifiée
+
+' ============================================
+' COUCHE PRÉSENTATION
+' ============================================
+package "4 PRESENTATION" #FFA07A {
+    class MenuResource
+}
+
+' ============================================
+' COUCHE APPLICATION
+' ============================================
+package "3 APPLICATION" #87CEEB {
+    class MenuService
+    interface MenuRepositoryInterface
+    interface PlatsRepositoryInterface
+}
+
+' ============================================
+' COUCHE DOMAIN
+' ============================================
+package "2 DOMAIN" #90EE90 {
+    class Menu
+    class Plat
+    class MenuEnrichi
+}
+
+' ============================================
+' COUCHE INFRASTRUCTURE
+' ============================================
+package "1 INFRASTRUCTURE" #FFD700 {
+    class MenuRepositoryMariadb
+    class PlatsRepositoryJSON
+    class PlatsRepositoryAPI
+}
+
+' ============================================
+' RELATIONS
+' ============================================
+MenuResource --> MenuService
+MenuService --> MenuRepositoryInterface
+MenuService --> PlatsRepositoryInterface
+MenuService --> Menu
+MenuService --> Plat
+MenuService ..> MenuEnrichi : creates
+
+MenuRepositoryMariadb ..|> MenuRepositoryInterface
+PlatsRepositoryJSON ..|> PlatsRepositoryInterface
+PlatsRepositoryAPI ..|> PlatsRepositoryInterface
+
+MenuRepositoryMariadb --> Menu
+PlatsRepositoryJSON --> Plat
+PlatsRepositoryAPI --> Plat
+
+MenuResource --> Menu
+MenuResource --> MenuEnrichi
+
+@enduml
+```
+
+---
+
 ## 📁 Structure du Projet
 
 ```
