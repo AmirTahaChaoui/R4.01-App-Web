@@ -1,0 +1,15 @@
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence" version="3.0">
+    <persistence-unit name="CommandesPU" transaction-type="RESOURCE_LOCAL">
+        <class>fr.univamu.iut.commandes.domain.Commande</class>
+        <properties>
+            <property name="jakarta.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver" />
+
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mariadb://mysql-dashmed-site.alwaysdata.net:3306/dashmed-site_r401-app-web" />
+
+            <property name="jakarta.persistence.jdbc.user" value="dashmed-site_labubu" />
+            <property name="jakarta.persistence.jdbc.password" value="DreamTeam1" />
+
+            <property name="jakarta.persistence.schema-generation.database.action" value="create-or-extend-tables"/>
+        </properties>
+    </persistence-unit>
+</persistence>

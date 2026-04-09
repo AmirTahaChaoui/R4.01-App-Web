@@ -1,0 +1,9 @@
+### Créer une nouvelle commande
+POST http://localhost:8080/Commandes-1.0-SNAPSHOT/api/commandes
+Content-Type: application/json
+
+{
+  "adresseLivraison": "10 avenue Victor Hugo, Aix-en-Provence",
+  "dateLivraison": "2026-04-10",
+  "menusIds": [1, 2]
+}
