@@ -25,7 +25,49 @@ Couche d'entrée de l'application.
 
 ---
 
-## 2. Inversion de Dépendance et CDI
+## 2. Diagramme de l'Architecture
+
+Le diagramme suivant illustre le flux de dépendances. Notez que toutes les dépendances pointent vers le domaine (le centre).
+
+```mermaid
+classDiagram
+    namespace Presentation {
+        class PlatResource
+        class UtilisateurResource
+    }
+    namespace Application {
+        class PlatService
+        class UtilisateurService
+    }
+    namespace Domain {
+        class IPlatRepository <<interface>>
+        class IUtilisateurRepository <<interface>>
+        class Plat
+        class Utilisateur
+    }
+    namespace Infrastructure {
+        class JSONPlatRepository
+        class JSONUtilisateurRepository
+    }
+
+    PlatResource ..> PlatService : @Inject
+    UtilisateurResource ..> UtilisateurService : @Inject
+    
+    PlatService ..> IPlatRepository : @Inject
+    UtilisateurService ..> IUtilisateurRepository : @Inject
+    
+    JSONPlatRepository --|> IPlatRepository : implemente
+    JSONUtilisateurRepository --|> IUtilisateurRepository : implemente
+
+    PlatService ..> Plat : manipule
+    UtilisateurService ..> Utilisateur : manipule
+    JSONPlatRepository ..> Plat : persiste
+    JSONUtilisateurRepository ..> Utilisateur : persiste
+```
+
+---
+
+## 3. Inversion de Dépendance et CDI
 
 Le projet utilise **Jakarta CDI (Weld SE)** pour gérer l'injection de dépendances.
 *   Les composants sont marqués avec `@ApplicationScoped`.
@@ -33,7 +75,7 @@ Le projet utilise **Jakarta CDI (Weld SE)** pour gérer l'injection de dépendan
 
 ---
 
-## 3. Persistance des Données
+## 4. Persistance des Données
 
 Les données sont stockées de manière persistante dans deux fichiers à la racine du projet :
 *   `plats.json` : Stocke la liste des plats.
@@ -43,7 +85,7 @@ La sérialisation/désérialisation est gérée par **Jakarta JSON-B (Yasson)**.
 
 ---
 
-## 4. Technologies Utilisées
+## 5. Technologies Utilisées
 
 *   **Jakarta EE 10** : Standard pour le développement Java Enterprise.
 *   **Jersey** : Implémentation de JAX-RS pour les services REST.
